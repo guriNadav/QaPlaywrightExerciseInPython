@@ -1,0 +1,21 @@
+Bug 1
+Problem:
+Mixing Selenium and Playwright and the code imports Selenium but does not use it
+Fix:
+Remove this line (from selenium import webdriver)
+Bug 2
+Problem:
+The code uses hard-coded waits (time.sleep) instead of proper synchronizatio this can lead to flaky and slow tests
+Fix:
+Replace time.sleep with Playwright’s built-in waiting mechanisms
+
+page.wait_for_selector("#search")
+page.wait_for_selector(".result-item")
+
+Bug 3
+Problem:
+The selector .button is too generic and may match multiple elements or break if the UI changes.
+Fix:
+Use a more stable and specific selector (e.g., ID or data-test attribute).
+
+page.locator("[data-test='search-button']").click()

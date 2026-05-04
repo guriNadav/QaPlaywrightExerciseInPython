@@ -7,11 +7,9 @@ def extract_price(price_text: str) -> Optional[float]:
     """
     if not price_text:
         return None
-    # Remove commas and find all number patterns (including decimals)
     cleaned = price_text.replace(",", "")
     matches = re.findall(r"\d+(?:\.\d+)?", cleaned)
     if not matches:
         return None
-    # Convert to float and return the maximum value (handles cases with multiple prices)
     prices = [float(num) for num in matches]
     return max(prices)
