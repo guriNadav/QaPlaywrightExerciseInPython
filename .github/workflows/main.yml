@@ -79,4 +79,5 @@ jobs:
           path: |
             test-results/
             allure-results/
+            screenshots/
           retention-days: 30
