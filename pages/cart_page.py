@@ -2,7 +2,7 @@ from pages.base_page import BasePage
 from utils.price_utils import extract_price
 
 class CartPage(BasePage):
-    path = "https://ebay.com"
+    path = "https://cart.ebay.com"
     total_selector = '[data-test-id="ITEM_TOTAL"]'
     remove_button_selector = '[data-test-id="cart-remove-item"]'
 
@@ -15,14 +15,21 @@ class CartPage(BasePage):
         except Exception as e:
             print(f"Failed to retrieve cart total price: {e}")
             return 0.0
-
+    
+    # def remove_all_items(self):
+    #     remove_buttons = self.page.locator(self.remove_button_selector)
+    #     count = remove_buttons.count()
+    #     for _ in range(count):
+    #         # תמיד לוחצים על הכפתור הראשון שנשאר
+    #         remove_buttons.first.click()
+    #         self.page.wait_for_timeout(1000)
     def remove_all_items(self):
-        remove_buttons = self.page.locator(self.remove_button_selector)
-        count = remove_buttons.count()
-        for _ in range(count):
-            # תמיד לוחצים על הכפתור הראשון שנשאר
-            remove_buttons.first.click()
-            self.page.wait_for_timeout(1000)
+        remove_button = self.page.locator(self.remove_button_selector).first
+        # כל עוד הכפתור הראשון קיים וגלוי - תלחץ עליו
+        while remove_button.is_visible():
+            remove_button.click()
+            self.page.wait_for_timeout(500)
+
 
     def navigate(self):
         self.page.goto(self.path, wait_until="domcontentloaded")

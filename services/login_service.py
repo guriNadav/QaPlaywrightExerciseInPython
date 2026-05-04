@@ -9,7 +9,7 @@ class LoginService:
     def login(self, user_id: str, password: str): # הורדנו async
         self.page.goto(self.login_page.path)
         self.login_page.login(user_id, password)
-        self.page.wait_for_load_state("domcontentloaded")
+        # self.page.wait_for_load_state("domcontentloaded")
 
     def is_logged_in(self) -> bool:
         try:

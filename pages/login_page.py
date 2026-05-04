@@ -22,13 +22,17 @@ class LoginPage(BasePage):
         self.type_text(self.password_input, password)
         self.click(self.login_in_button)
 
+    # def login(self, user_id: str, password: str):
+    #     # ניווט ראשוני לדף הלוגין
+    #     self.page.goto(self.path)
+    #     # במקרים מסוימים איביי מציג דף שונה, לכן נוסיף בדיקה קלה
+    #     if self.page.locator(self.email_input).is_visible():
+    #         self.enter_user_id(user_id)
+    #         self.enter_password(password)
     def login(self, user_id: str, password: str):
-        # ניווט ראשוני לדף הלוגין
-        self.page.goto(self.path)
-        # במקרים מסוימים איביי מציג דף שונה, לכן נוסיף בדיקה קלה
-        if self.page.locator(self.email_input).is_visible():
-            self.enter_user_id(user_id)
-            self.enter_password(password)
+        self.sign_in()
+        self.enter_user_id(user_id)
+        self.enter_password(password)
 
     def get_error_message(self) -> Optional[str]:
         try:

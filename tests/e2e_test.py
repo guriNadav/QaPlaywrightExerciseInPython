@@ -3,29 +3,36 @@ import os
 import pytest
 from pathlib import Path
 from dotenv import load_dotenv
-from playwright.sync_api import Page # שונה ל-sync
+from playwright.sync_api import Page
 
+# טעינת משתני סביבה
 load_dotenv()
 
 from services.login_service import LoginService
 from services.search_service import SearchService
 from services.cart_service import CartService
 
+# נתיב לקובץ הנתונים
 TEST_DATA_PATH = Path(__file__).parent.parent / "data" / "testData.json"
+
 with TEST_DATA_PATH.open(encoding='utf-8') as f:
     TEST_DATA = json.load(f)
 
-def test_complete_flow(page: Page): # הורדנו async
+def test_complete_flow(page: Page):
+    # אתחול הסרביסים (סינכרוני)
     login_service = LoginService(page)
     search_service = SearchService(page)
     cart_service = CartService(page)
 
-    # הוסרו כל ה-await
+    print("--- Starting Login ---")
+    # ביצוע הלוגין
     login_service.login(
         os.getenv("EBAY_USER", ""),
         os.getenv("EBAY_PASS", ""),
     )
+    print("--- Login Finished! ---")
 
+    # חיפוש מוצרים
     urls = search_service.search_items_by_name_under_price(
         TEST_DATA["search"]["query"],
         TEST_DATA["search"]["maxPrice"],
@@ -35,6 +42,7 @@ def test_complete_flow(page: Page): # הורדנו async
     if not urls:
         pytest.skip("No items found")
 
+    # הוספה לסל ואימות
     cart_service.add_items_to_cart(urls)
     cart_service.assert_cart_total_not_exceeds(
         TEST_DATA["search"]["maxPrice"],
