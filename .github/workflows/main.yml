@@ -35,7 +35,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest --alluredir=allure-results --headless --screenshot=on --video=retain-on-failure
+          pytest --alluredir=allure-results --screenshot=on --video=retain-on-failure
         env:
           EBAY_USER: ${{ secrets.EBAY_USER }}
           EBAY_PASS: ${{ secrets.EBAY_PASS }}
