@@ -70,8 +70,7 @@ jobs:
         if: always()
         run: |
           echo "## 📊 Allure Test Report" >> $GITHUB_STEP_SUMMARY
-          echo "Latest results are available here: [🌐 View Report](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }})" >> $GITHUB_STEP_SUMMARY
-        #   echo "Latest results are available here: [🌐 View Report]https://770gay.github.io/QaPlaywrightExercise" >> $GITHUB_STEP_SUMMARY
+          echo "Latest results are available here: [🌐 View Report]https://guriNadav.github.io/QaPlaywrightExerciseInPython" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
