@@ -15,7 +15,6 @@ jobs:
   test:
     timeout-minutes: 15
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,20 +22,21 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11" 
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install allure-pytest 
+          pip install allure-pytest pytest-playwright
 
       - name: Install Playwright Browsers
         run: playwright install --with-deps
 
       - name: Run tests
         run: |
-          python -m pytest --alluredir=allure-results
+          # הרצה במצב headless עם צילום מסך ווידאו אוטומטיים
+          python -m pytest --alluredir=allure-results --headless --screenshot=on --video=retain-on-failure
         env:
           EBAY_USER: ${{ secrets.EBAY_USER }}
           EBAY_PASS: ${{ secrets.EBAY_PASS }}
@@ -56,7 +56,7 @@ jobs:
         with:
           allure_results: allure-results
           allure_history: allure-history
-          keep_reports: 30 
+          keep_reports: 30
 
       - name: Deploy report to Github Pages
         if: always()
@@ -70,7 +70,7 @@ jobs:
         if: always()
         run: |
           echo "## 📊 Allure Test Report" >> $GITHUB_STEP_SUMMARY
-          echo "Latest results are available here: [🌐 View Report]https://guriNadav.github.io/QaPlaywrightExerciseInPython" >> $GITHUB_STEP_SUMMARY
+          echo "Latest results are available here: [🌐 View Report](https://github.io)" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -79,5 +79,5 @@ jobs:
           name: playwright-artifacts
           path: |
             test-results/
-            screenshots/
-          retention-days: 30 # שמירת צילומי מסך וסרטונים ל-30 יום
+            allure-results/
+          retention-days: 30
